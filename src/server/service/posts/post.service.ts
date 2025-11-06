@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/server/db";
+import { db } from "@/server/db";
 import z from "zod";
 import { action } from "@/lib/safe-action";
 import { cacheTag, updateTag } from "next/cache";
@@ -9,7 +9,7 @@ export const getPosts = async () => {
   cacheTag("posts");
   const start = performance.now();
 
-  const posts = await prisma.posts.findMany({
+  const posts = await db.posts.findMany({
     take: 10,
     orderBy: {
       createdAt: "desc",
@@ -31,7 +31,7 @@ export const addPost = action
   .inputSchema(postSchema)
   .action(async ({ parsedInput }) => {
     const start = performance.now();
-    const newPost = await prisma.posts.create({
+    const newPost = await db.posts.create({
       data: {
         name: parsedInput.name,
         id: Date.now().toString(),
