@@ -10,7 +10,7 @@ export const getPosts = async () => {
   const start = performance.now();
 
   const posts = await db.posts.findMany({
-    take: 10,
+    take: 5,
     orderBy: {
       createdAt: "desc",
     },
@@ -43,3 +43,23 @@ export const addPost = action
       message: `Post "${newPost.name}" added in ${(end - start).toFixed(0)}ms`,
     };
   });
+
+export const getPostPagination = async (page: number, pageSize: number) => {
+  "use cache";
+  cacheTag("posts");
+  const start = performance.now();
+
+  const posts = await db.posts.findMany({
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const end = performance.now();
+
+  return {
+    posts,
+    duration: end - start,
+  };
+};

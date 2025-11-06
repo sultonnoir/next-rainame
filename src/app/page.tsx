@@ -1,16 +1,18 @@
-import { getPosts } from "@/server/service/posts/post.service";
+import {
+  getPostPagination,
+} from "@/server/service/posts/post.service";
 import Image from "next/image";
 import Posts from "./posts";
 import { Suspense } from "react";
 import PostForm from "./post-form";
 
 export default async function Home() {
-  const data = getPosts();
+  const data = getPostPagination(1, 5);
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <Suspense fallback={<div>Loading posts...</div>}>
-          <Posts data={data} />
+          <Posts initialData={data} />
         </Suspense>
         <PostForm />
         <Image
