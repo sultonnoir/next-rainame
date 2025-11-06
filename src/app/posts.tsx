@@ -1,6 +1,6 @@
 "use client";
 import { use } from "react";
-import { posts } from "../../generated/prisma/client";
+import { posts } from "@/generated/prisma/client";
 
 export default function Posts({
   data,
